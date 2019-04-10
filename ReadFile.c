@@ -23,6 +23,7 @@ int lex();
 #define LETTER 0
 #define DIGIT 1
 #define UNKNOWN 99
+#define ERROR 2
 
 /* Token codes */
 #define INT_LIT 10
@@ -41,10 +42,10 @@ int main() {
         printf("ERROR - cannot open front.in \n");
     }
     else {
-        getChar(line);
+        getLine();
         do {
             lex();
-        } while (nextToken != EOF);
+        } while (nextToken != ERROR);
     }
 }
 
@@ -76,7 +77,7 @@ int lookup(char ch) {
             break;
         default:
             addChar();
-            nextToken = EOF;
+            nextToken = ERROR;
             break;
     }
     return nextToken; }
@@ -92,8 +93,8 @@ void addChar() {
 }
 
 void getLine() {
-    while (textFile != EOF) {
-        
+    while (!feof(textFile)) {
+        getChar(line);
     }
     fclose(textFile);
 }
